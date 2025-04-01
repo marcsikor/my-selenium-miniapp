@@ -28,23 +28,23 @@ login_button.click()
 
 driver.get(paths_dict["grades-page"])
 
-periods = driver.find_elements(By.TAG_NAME, "usos-frame-section")
-
-periods_list = []
-
-for period in periods:
-    period_text = period.get_attribute("textContent")
-    periods_list.append(period_text)
-
-grades = driver.find_elements(By.XPATH, "//usos-frame-section/table/tbody/tr/td/div/span")
-
+periods_dict = {}
 grades_list = []
 
-for grade in grades:
-    grade_text = grade.get_attribute("innerText")
-    if grade_text != 'ZAL' and grade_text != '(brak ocen)':
-        grades_list.append(float(grade_text.replace(',', '.')))
+periods = driver.find_elements(By.TAG_NAME, "usos-frame-section")
 
-print(mean(grades_list))
+for period in periods:
+    period_text = period.get_attribute("section-title")
+    grades = period.find_elements(By.XPATH, ".//table/tbody/tr/td/div/span")
+    for grade in grades:
+        grade_text = grade.get_attribute("innerText")
+        if grade_text != 'ZAL' and grade_text != '(brak ocen)':
+            grades_list.append(float(grade_text.replace(',', '.')))
+    if len(grades_list) != 0:
+        periods_dict[period_text] = mean(grades_list)
+    else:
+        periods_dict[period_text] = 0.0
+    grades_list.clear()
 
+print(periods_dict)
 driver.quit()
