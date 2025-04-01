@@ -1,0 +1,7 @@
+.venv
+
+env-activate.sh
+
+src/selenium/credentials.json
+
+src/selenium/portal-paths.json
