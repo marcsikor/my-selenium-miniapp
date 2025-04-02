@@ -11,7 +11,9 @@ with open('credentials.json') as cred:
 with open('portal-paths.json') as paths:
     paths_dict = json.load(paths)
 
-driver = webdriver.Chrome()
+options = webdriver.ChromeOptions()
+options.add_argument('--headless')
+driver = webdriver.Chrome(options=options)
 
 driver.get(paths_dict["login-page"]) # login
 
@@ -46,5 +48,6 @@ for period in periods:
         periods_dict[period_text] = 0.0
     grades_list.clear()
 
-print(periods_dict)
+with open('output.json', 'w') as f:
+    json.dump(periods_dict, f)
 driver.quit()
