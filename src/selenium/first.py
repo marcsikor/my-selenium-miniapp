@@ -2,7 +2,6 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 
 from statistics import mean
-import time
 import json
 
 with open('credentials.json') as cred:
@@ -38,10 +37,12 @@ periods = driver.find_elements(By.TAG_NAME, "usos-frame-section")
 for period in periods:
     period_text = period.get_attribute("section-title")
     grades = period.find_elements(By.XPATH, ".//table/tbody/tr/td/div/span")
+    
     for grade in grades:
         grade_text = grade.get_attribute("innerText")
         if grade_text != 'ZAL' and grade_text != '(brak ocen)':
-            grades_list.append(float(grade_text.replace(',', '.')))
+            grades_list.append(float(grade_text.replace(',', '.'))) 
+    
     if len(grades_list) != 0:
         periods_dict[period_text] = mean(grades_list)
     else:
