@@ -56,13 +56,15 @@ class UserInterface:
         with open('portal-paths.json') as paths:
             paths_dict = json.load(paths)
 
-        sc = scraper.Scraper(False)
+        sc = scraper.Scraper(True)
 
         sc.execute_login(self.username.get(), self.password.get(), paths_dict["login-page"])
         
         output = sc.get_grades(paths_dict["grades-page"])
+        
         tk.Label(self.root, text="Wykaz średnich poniżej").pack()
-        tk.Label(self.root, text=output).pack()
+        for period, grade in output.items():
+           tk.Label(self.root, text=period + ': ' + str(round(grade,3))).pack()
 
 if __name__ == "__main__":
     ui = UserInterface()
